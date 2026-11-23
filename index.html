@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Simon and Picco's Games</title>
+<meta name="description" content="One page with links to every game Simon and Picco have made.">
+<meta name="theme-color" content="#14110f">
+<style>
+:root{--bg:#14110f;--panel:#221c17;--panel2:#2e251d;--line:#4a3a2b;--gold:#f2b134;--sand:#e9d3a0;--text:#f4ead6;--muted:#b3a58b;--simon:#f2b134;--picco:#58a6d6}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:"Trebuchet MS",Verdana,sans-serif}
+body{padding:max(18px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(28px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+.wrap{margin:0 auto;max-width:880px}
+header{text-align:center;padding:14px 0 6px}
+h1{margin:0;font-size:clamp(1.6rem,6vw,2.4rem);color:var(--gold);letter-spacing:.02em}
+.sub{margin:8px 0 0;color:var(--muted);font-size:1rem}
+h2{margin:30px 0 4px;font-size:1.35rem}
+h2.simon{color:var(--simon)}
+h2.picco{color:var(--picco)}
+.who{margin:0 0 12px;color:var(--muted);font-size:.95rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+a.card{display:flex;flex-direction:column;gap:6px;min-height:112px;padding:16px;border-radius:16px;background:var(--panel);border:2px solid var(--line);color:var(--text);text-decoration:none}
+a.card:hover,a.card:focus-visible{background:var(--panel2);border-color:var(--accent,var(--gold));outline:none}
+a.card:active{transform:scale(.98)}
+.simon-card{--accent:var(--simon)}
+.picco-card{--accent:var(--picco)}
+.top{display:flex;align-items:center;gap:10px}
+.em{font-size:1.9rem;line-height:1}
+.name{font-size:1.1rem;font-weight:700;color:var(--accent)}
+.desc{font-size:.92rem;color:var(--sand);line-height:1.4}
+.tag{align-self:flex-start;margin-top:auto;font-size:.75rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 10px}
+footer{margin-top:34px;text-align:center;color:var(--muted);font-size:.85rem}
+.empty{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🎮 Simon and Picco's Games</h1>
+    <p class="sub">Pick a game and play. Every game saves on the device you are using.</p>
+  </header>
+  <main id="root"></main>
+  <footer>Made with love by the family. Tap a game to play it.</footer>
+</div>
+<script>
+"use strict";
+/* ------------------------------------------------------------------
+   TO ADD A GAME: copy one of the lines below into the right kid's list.
+   url: the game's GitHub Pages address.  tag: a short label like "RPG".
+   To add a new kid, add another block to KIDS.
+------------------------------------------------------------------- */
+const BASE = "https://augustineiacopelli.github.io/";
+
+const KIDS = [
+  {
+    key: "simon", name: "Simon's Games", blurb: "Adventures designed by Simon",
+    games: [
+      {em:"🗡️", title:"Realm of Regions",              url:BASE+"realm-of-regions/",          desc:"The first Realm of Regions. Name your hero and set out on an adventure.", tag:"RPG"},
+      {em:"🏜️", title:"Realm of Regions 2",            url:BASE+"realm-of-regions-remake/",   desc:"The second adventure, with a world map, shops, and a bag of items.",      tag:"RPG"},
+      {em:"🌍", title:"Realm of Regions Ultimate",     url:BASE+"realm-of-regions-ultimate/", desc:"Games 1, 2, and 3 together in one place, plus a shop for mini games.",    tag:"RPG collection"},
+      {em:"🐉", title:"Realm-of-Regions 5: Adventure Calls", url:BASE+"realm-of-regions-5/",  desc:"Fight through 15 regions and their dragons. Beat them all to unlock more.", tag:"RPG"}
+    ]
+  },
+  {
+    key: "picco", name: "Picco's Games", blurb: "Adventures designed by Picco",
+    games: [
+      {em:"🔮", title:"Realm of Echoes", url:BASE+"realm-of-echoes/", desc:"Cross six regions and collect the six pieces of the shattered Echo Stone.", tag:"RPG"}
+    ]
+  }
+];
+
+function el(tag, cls, text){ const e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; return e; }
+
+const root = document.getElementById("root");
+KIDS.forEach(k => {
+  root.appendChild(el("h2", k.key, k.name));
+  root.appendChild(el("p", "who", k.blurb));
+  const grid = el("div", "grid");
+  if (!k.games.length) grid.appendChild(el("p", "empty", "New games are coming soon."));
+  k.games.forEach(g => {
+    const a = el("a", "card " + k.key + "-card");
+    a.href = g.url; a.rel = "noopener";
+    const top = el("div", "top");
+    top.appendChild(el("span", "em", g.em));
+    top.appendChild(el("span", "name", g.title));
+    a.appendChild(top);
+    a.appendChild(el("div", "desc", g.desc));
+    if (g.tag) a.appendChild(el("span", "tag", g.tag));
+    grid.appendChild(a);
+  });
+  root.appendChild(grid);
+});
+</script>
+</body>
+</html>
